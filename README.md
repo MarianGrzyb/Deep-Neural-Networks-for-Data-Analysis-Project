@@ -3,7 +3,7 @@
 ## Phase 2:
 
 #### What’s there:
-- [A] Setup of a project environment (hopefully with GPU support) [Kaggle Notebooks/Google Colab/your local machine] [1]
+- [A] Setup of a project environment (hopefully with GPU support) [Kaggle Notebooks/Google Colab/your local machine] [1] Done
 - [B] Coding the base model and training code [1]
 - [C] Coding useful training infrastructure (logging results with e.g. Tensorboard, selecting and logging hyperparameters with e.g. Hparams (hyperparameter_tuning_with_hparams) or wandb.ai site or similar) [1, 2]
 - [D] first run training (try to overfit to one train data batch – sanity check that training works), log progress & results dumped to easily searchable files (like plain txt) [1]
