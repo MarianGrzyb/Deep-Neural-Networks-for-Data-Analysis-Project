@@ -15,6 +15,7 @@ model:
 training:
   batch_size: 16
   epochs: 10
+  sanity_epochs: 60
   learning_rate: 0.0003
   weight_decay: 0.0001
 
