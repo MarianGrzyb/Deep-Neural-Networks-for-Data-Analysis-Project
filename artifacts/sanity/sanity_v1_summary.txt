@@ -1,0 +1,10 @@
+Mode: sanity
+Device: cuda
+Run name: sanity_v1
+Class weights: [2.663900375366211, 0.44490644335746765, 2.652892589569092]
+{
+  "epoch": 60,
+  "sanity_loss": 0.0021908674389123917,
+  "sanity_accuracy": 1.0,
+  "first_sanity_loss": 1.1656155586242676
+}

@@ -1,0 +1,9 @@
+torch
+torchvision
+tensorboard
+scikit-learn
+pandas
+Pillow
+PyYAML
+tqdm
+streamlit
