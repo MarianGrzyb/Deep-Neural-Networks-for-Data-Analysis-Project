@@ -1,0 +1,14 @@
+Mode: train
+Device: cuda
+Run name: training_v1
+Class weights: [2.663900375366211, 0.44490644335746765, 2.652892589569092]
+{
+  "epoch": 10,
+  "train_loss": 0.8408978383984274,
+  "validation_loss": 0.7469447438667947,
+  "validation_macro_f1": 0.41897728227093306,
+  "validation_recall_benign": 0.6744186046511628,
+  "validation_recall_malignant": 0.6666666666666666,
+  "validation_recall_normal": 0.11627906976744186,
+  "best_validation_macro_f1": 0.4399188445192966
+}
