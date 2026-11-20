@@ -1,3 +1,4 @@
+
 import argparse
 import json
 import random
@@ -87,6 +88,7 @@ def run_sanity_check(
     metrics_path: Path,
     sanity_epochs: int,
     batch_size: int,
+    checkpoint_path: Path,
 ) -> dict:
     """Overfit one fixed, non-augmented training batch."""
 
@@ -142,6 +144,18 @@ def run_sanity_check(
             )
 
     final_metrics["first_sanity_loss"] = first_loss
+
+    torch.save(
+        {
+            "epoch": sanity_epochs,
+            "model_state_dict": model.state_dict(),
+            "optimizer_state_dict": optimizer.state_dict(),
+        },
+        checkpoint_path,
+    )
+
+    print(f"Sanity checkpoint saved to: {checkpoint_path}")
+
     return final_metrics
 
 
@@ -154,8 +168,10 @@ def run_training(
     writer: SummaryWriter,
     metrics_path: Path,
     epochs: int,
+    checkpoint_path: Path,
 ) -> dict:
-    best_validation_f1 = 0.0
+    best_validation_f1 = float("-inf")
+
     final_metrics = {}
 
     with metrics_path.open("w", encoding="utf-8") as metrics_file:
@@ -184,10 +200,22 @@ def run_training(
                 device,
             )
 
-            best_validation_f1 = max(
-                best_validation_f1,
-                validation_metrics["macro_f1"],
-            )
+            current_validation_f1 = validation_metrics["macro_f1"]
+
+            if current_validation_f1 > best_validation_f1:
+                best_validation_f1 = current_validation_f1
+
+                torch.save(
+                    {
+                        "epoch": epoch,
+                        "model_state_dict": model.state_dict(),
+                        "optimizer_state_dict": optimizer.state_dict(),
+                        "best_validation_f1": best_validation_f1,
+                    },
+                    checkpoint_path,
+                )
+
+                print(f"Best model checkpoint saved to: {checkpoint_path}")
 
             final_metrics = {
                 "epoch": epoch,
@@ -258,6 +286,11 @@ def main() -> None:
     run_directory.mkdir(parents=True, exist_ok=True)
     artifact_directory.mkdir(parents=True, exist_ok=True)
 
+    ####ADDED - start
+    # Define the checkpoint file for the current run.
+    checkpoint_path = artifact_directory / f"{run_name}_best_model.pth"
+    ####ADDED - finish
+
     writer = SummaryWriter(log_dir=str(run_directory))
 
     hparams = {
@@ -311,6 +344,7 @@ def main() -> None:
             metrics_path=metrics_path,
             sanity_epochs=config["training"]["sanity_epochs"],
             batch_size=config["training"]["batch_size"],
+            checkpoint_path=checkpoint_path,
         )
     else:
         loaders = {
@@ -335,6 +369,7 @@ def main() -> None:
             writer=writer,
             metrics_path=metrics_path,
             epochs=config["training"]["epochs"],
+            checkpoint_path=checkpoint_path,
         )
 
     summary_path = artifact_directory / f"{run_name}_summary.txt"
@@ -357,6 +392,7 @@ def main() -> None:
 
     print(f"Metrics saved to: {metrics_path}")
     print(f"Summary saved to: {summary_path}")
+    print(f"Checkpoint saved to: {checkpoint_path}")
 
 
 if __name__ == "__main__":
