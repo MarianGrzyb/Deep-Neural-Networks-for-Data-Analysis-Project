@@ -23,16 +23,6 @@
 - Klaudia [1]
 - Mateusz [2]
 
-
-## Phase 2 - Klaudia [1] completed work
-
-- [x] **[A]** Project environment: GitHub repository, Google Colab GPU runtime, Google Drive dataset storage, dependencies, and reproducible configuration.
-- [x] **[B]** Dataset loader and preprocessing for the three provided classes: Benign, Malignant, and Normal.
-- [x] **[B]** Pretrained ResNet-18 model with a three-class output layer.
-- [x] **[B]** Weighted cross-entropy loss, AdamW optimiser, and training loop.
-- [x] **[C]** TensorBoard logging, searchable JSONL/text logs, and hyperparameter logging.
-- [x] **[D]** One-batch overfitting sanity check.
-
 ### Sanity-run result
 
 The sanity check trained the model on one fixed training batch for 60 epochs on a Tesla T4 GPU.
@@ -45,7 +35,10 @@ The sanity check trained the model on one fixed training batch for 60 epochs on 
 
 The loss decreased strongly and accuracy reached 100%, confirming that the data pipeline, model, weighted loss, optimiser, backpropagation, and logging work correctly. This is a pipeline verification only, not a generalisation result.
 
-### Reproducing the sanity run
+### How to run?
 
+simple reproduction of the sanity run
 ```bash
-python -m src.train --config configs/base.yaml --mode sanity --run-name sanity_v1
+!python -m src.train --config configs/base.yaml --mode sanity --run-name sanity_v1
+```
+go through ```\notebooks\run_instruction.ipynb``` to reproduce all the steps: sanity run, first training run -> app demo
